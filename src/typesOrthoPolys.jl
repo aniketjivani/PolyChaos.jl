@@ -10,6 +10,7 @@ export          OrthoPoly,
                 Beta01OrthoPoly,
                 GammaOrthoPoly,
                 LogisticOrthoPoly,
+                Legendre01OrthoPoly,
                 Uniform01OrthoPoly,
                 Uniform_11OrthoPoly,
                 MeixnerPollaczekOrthoPoly,
@@ -187,6 +188,24 @@ struct GaussOrthoPoly{V, M, Q} <: AbstractCanonicalOrthoPoly{V, M, Q}
         α, β = r_scale(1/sqrt(2pi), rm_hermite_prob(Nrec)...)
         quadrature = addQuadrature ?  Quad(length(α)-1,α,β) : EmptyQuad()
         new{promote_type(typeof(α), typeof(β)), GaussMeasure, typeof(quadrature)}(deg, α, β, GaussMeasure(), quadrature)
+    end
+end
+
+struct Legendre01OrthoPoly{V, M, Q} <: AbstractCanonicalOrthoPoly{V, M, Q}
+    deg::Int        # Maximum degree
+    α::V            # Recurrence coefficients
+    β::V            # Recurrence coefficients
+    measure::M
+    quad::Q
+
+    # inner constructor
+    # function Legendre01OrthoPoly(deg::Int, Nrec::Int=deg+1, addQuadrature::Bool=true, normed::Bool=false)
+    function Legendre01OrthoPoly(deg::Int, Nrec::Int=deg+1, addQuadrature::Bool=true)
+        _checkConsistency(deg, Nrec)
+        # α, β = rc_legendre01(Nrec::Int, normed)
+        α, β = rc_legendre01(Nrec::Int)
+        quadrature = addQuadrature ?  Quad(length(α)-1,α,β) : EmptyQuad()
+        new{promote_type(typeof(α), typeof(β)), Uniform01Measure, typeof(quadrature)}(deg, α, β, Uniform01Measure(), quadrature)
     end
 end
 
