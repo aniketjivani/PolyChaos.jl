@@ -89,11 +89,12 @@ function evaluate(n::Int,x::AbstractArray{<:Real},a::AbstractVector{<:Real},b::A
         end
     end
     if normalized && !monic
-        return pplus / (1 / sqrt(2 * n + 1))
+        pplus = pplus / (1 / sqrt(2 * n + 1))
     end
 
     if normalized && monic
-        return pplus / (sqrt(prod(b[1:n])))
+        # println("Normalizing monic polynomials")
+        pplus =  pplus / (sqrt(prod(b[1:(n + 1)])))
     end
     nx == 1 ? first(pplus) : pplus
 end
