@@ -91,6 +91,10 @@ function evaluate(n::Int,x::AbstractArray{<:Real},a::AbstractVector{<:Real},b::A
     if normalized && !monic
         return pplus / (1 / sqrt(2 * n + 1))
     end
+
+    if normalized && monic
+        return pplus / (sqrt(prod(b[1:n])))
+    end
     nx == 1 ? first(pplus) : pplus
 end
 evaluate(n::Int,x::Real,a::AbstractVector{<:Real},b::AbstractVector{<:Real}, monic::Bool=true, normalized::Bool=false) = evaluate(n,[x],a,b, monic,normalized)
